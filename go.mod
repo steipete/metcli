@@ -2,6 +2,8 @@ module github.com/steipete/metcli
 
 go 1.25.0
 
+toolchain go1.25.14
+
 require (
 	github.com/alecthomas/kong v1.16.1
 	github.com/steipete/sweetcookie v0.0.2
@@ -24,5 +26,5 @@ require (
 	modernc.org/libc v1.75.6 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.12.1 // indirect
-	modernc.org/sqlite v1.57.0 // indirect
+	modernc.org/sqlite v1.58.0 // indirect
 )

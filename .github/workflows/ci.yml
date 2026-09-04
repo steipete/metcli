@@ -13,12 +13,17 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.25.0', '1.25.14']
+    env:
+      GOTOOLCHAIN: local
     steps:
       - uses: actions/checkout@v7
 
       - uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version: ${{ matrix.go }}
           cache: true
 
       - name: gofmt check
@@ -31,3 +36,8 @@ jobs:
 
       - name: go test
         run: go test ./...
+
+      - name: Build and smoke test CLIs
+        run: |
+          go build -o "$RUNNER_TEMP/metcli-bin/" ./cmd/...
+          python3 scripts/smoke.py "$RUNNER_TEMP/metcli-bin"
