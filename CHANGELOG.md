@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Release binaries for macOS are now Developer ID signed and notarized, so direct downloads pass Gatekeeper.
 - Fix release-note publication and verify the published body against the finalized changelog.
 
 ## 0.1.0 - 2026-09-13
