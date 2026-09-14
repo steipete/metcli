@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix release-note publication and verify the published body against the finalized changelog.
+
 ## 0.1.0 - 2026-09-13
 
 **Highlights:** First release.
