@@ -2,7 +2,8 @@
 
 `.github/workflows/release-unified.yml` calls the shared
 [Go CLI archetype](https://github.com/openclaw/release-workflows) pinned to
-v1.9.0 (`f613cbfed2b043159c850c353e7facb8c89833b0`). It publishes six platform
+the v1.9.0-compatible multi-command archive fix from upstream PR #54
+(`4101771179b7a1854728bba08805839485f874f7`). It publishes six platform
 archives containing `metcli`, `ig-cookies`, and `ig-profile`, preserving
 `metcli_<version>_<os>_<arch>.tar.gz` (Windows: `.zip`) and `checksums.txt`.
 Archives also retain `CHANGELOG.md`, `LICENSE`, and `README.md`.
@@ -90,7 +91,9 @@ the exact finalized changelog section, including its dated heading.
 
 Watch the exact run through completion. Retry failed jobs once for transient
 infrastructure errors; fix root causes otherwise. Retries reuse the immutable
-annotated tag and must never move it. After publication, verify the existing
+annotated tag and must never move it. A corrected shared-workflow pin can run
+from a newer main caller while rebuilding the existing tag’s frozen source.
+After publication, verify the existing
 release rather than rerunning signing, which produces new timestamped bytes.
 
 ## Verify and finish

@@ -40,7 +40,7 @@ jobs:
       contents: write
       pull-requests: write
       statuses: read
-    uses: openclaw/release-workflows/.github/workflows/release-go-cli.yml@f613cbfed2b043159c850c353e7facb8c89833b0 # v1.9.0
+    uses: openclaw/release-workflows/.github/workflows/release-go-cli.yml@4101771179b7a1854728bba08805839485f874f7 # v1.9.0 + multi-command archive fix (#54)
     with:
       version: ${{ inputs.version }}
       repository-type: personal
