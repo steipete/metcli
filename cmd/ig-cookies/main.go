@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/steipete/metcli/internal/version"
 	"github.com/steipete/sweetcookie"
 )
 
@@ -31,6 +32,7 @@ var (
 
 func main() {
 	var (
+		versionFlag = flag.Bool("version", false, "print version and exit")
 		formatFlag  = flag.String("format", "header", "header|json")
 		outFlag     = flag.String("out", "", "output path")
 		profileFlag = flag.String("profile", "", "Chrome profile name/dir or Cookies DB path")
@@ -47,6 +49,10 @@ func main() {
 	}
 
 	flag.Parse()
+	if *versionFlag {
+		fmt.Println("ig-cookies " + version.Version)
+		return
+	}
 
 	format := strings.ToLower(strings.TrimSpace(*formatFlag))
 	if *jsonFlag {

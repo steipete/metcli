@@ -11,6 +11,7 @@ import tempfile
 
 def main():
     binaries = Path(sys.argv[1]).resolve()
+    expected_version = sys.argv[2] if len(sys.argv) > 2 else None
     with tempfile.TemporaryDirectory(prefix="metcli-smoke-") as temporary:
         fixture = Path(temporary)
         database = fixture / "Cookies"
@@ -50,6 +51,9 @@ def main():
         for name in ("metcli", "ig-profile", "ig-cookies"):
             if "Usage:" not in run(name, "--help"):
                 raise RuntimeError(f"{name} help is missing usage")
+            version = run(name, "--version").strip()
+            if expected_version is not None and version != f"{name} {expected_version}":
+                raise RuntimeError(f"{name} version differs from {expected_version}: {version}")
 
         cookies = json.loads(run("ig-cookies", "--profile", str(database), "--json"))
         values = {cookie["name"]: cookie["value"] for cookie in cookies}
@@ -64,7 +68,7 @@ def main():
         if header != "Cookie: csrftoken=synthetic-csrf\n":
             raise RuntimeError("cookie name filtering or header export failed")
 
-    print("CLI smoke passed: help, SQLite cookie JSON/header export, domain/name filtering")
+    print("CLI smoke passed: help, version, SQLite cookie JSON/header export, domain/name filtering")
 
 
 if __name__ == "__main__":

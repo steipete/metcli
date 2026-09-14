@@ -13,6 +13,7 @@ import (
 
 	"github.com/steipete/metcli/internal/inline"
 	"github.com/steipete/metcli/internal/instagram"
+	"github.com/steipete/metcli/internal/version"
 	"golang.org/x/term"
 )
 
@@ -28,6 +29,7 @@ type outputItem struct {
 
 func main() {
 	var (
+		versionFlag       = flag.Bool("version", false, "print version and exit")
 		formatFlag        = flag.String("format", "auto", "auto|inline|url|json")
 		maxFlag           = flag.Int("max", 12, "max items (0 = all)")
 		profileFlag       = flag.String("profile", "", "Chrome profile name/dir or Cookies DB path")
@@ -49,6 +51,10 @@ func main() {
 	}
 
 	flag.Parse()
+	if *versionFlag {
+		fmt.Println("ig-profile " + version.Version)
+		return
+	}
 
 	username := strings.TrimSpace(*userFlag)
 	if username == "" {
