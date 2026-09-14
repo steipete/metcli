@@ -2,9 +2,6 @@ version: 2
 
 project_name: metcli
 
-changelog:
-  disable: true
-
 release:
   name_template: "metcli {{ .Version }}"
 

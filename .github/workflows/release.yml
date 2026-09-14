@@ -60,3 +60,19 @@ jobs:
           args: release --clean --release-notes ${{ runner.temp }}/release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify published release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/releases/tags/$RELEASE_TAG" \
+            --jq .body > "$RUNNER_TEMP/published-notes.md"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"])
+          expected = (root / "release-notes.md").read_text().strip()
+          actual = (root / "published-notes.md").read_text().strip()
+          if not expected or actual != expected:
+              raise SystemExit("published release notes differ from the finalized changelog")
+          PY
