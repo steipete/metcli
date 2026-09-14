@@ -10,11 +10,13 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/steipete/metcli/internal/inline"
 	"github.com/steipete/metcli/internal/instagram"
+	"github.com/steipete/metcli/internal/version"
 	"golang.org/x/term"
 )
 
 type CLI struct {
-	Instagram InstagramCmd `cmd:"" help:"Instagram helpers"`
+	Version   kong.VersionFlag `help:"Print version and exit"`
+	Instagram InstagramCmd     `cmd:"" help:"Instagram helpers"`
 }
 
 type InstagramCmd struct {
@@ -103,7 +105,7 @@ type outputItem struct {
 
 func main() {
 	cli := CLI{}
-	ctx := kong.Parse(&cli, kong.Name("metcli"), kong.UsageOnError())
+	ctx := kong.Parse(&cli, kong.Name("metcli"), kong.UsageOnError(), kong.Vars{"version": "metcli " + version.Version})
 	switch cmd := ctx.Command(); cmd {
 	case "instagram profile <user>":
 		if err := cli.Instagram.Profile.Run(); err != nil {
