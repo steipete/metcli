@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 - 2026-09-14
+
+**Highlights:** macOS downloads are signed and notarized.
 
 - Release binaries for macOS are now Developer ID signed and notarized, so direct downloads pass Gatekeeper.
 - Fix release-note publication and verify the published body against the finalized changelog.

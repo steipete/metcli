@@ -1,7 +1,7 @@
 # metcli
 cli to get your data out of Meta. very WIP
 
-Download the [0.1.0 release](https://github.com/steipete/metcli/releases/tag/v0.1.0)
+Download the [0.1.1 release](https://github.com/steipete/metcli/releases/tag/v0.1.1)
 for macOS, Linux, or Windows (Intel/AMD 64-bit or ARM64). Each archive contains
 `metcli`, `ig-cookies`, and `ig-profile`; verify it against the release's
 `checksums.txt` before extracting the binaries into a directory on your PATH.
@@ -12,9 +12,9 @@ are Developer ID signed by Peter Steinberger and notarized by Apple, so direct
 downloads pass Gatekeeper. You can also install from source:
 
 ```sh
-go install github.com/steipete/metcli/cmd/metcli@v0.1.0
-go install github.com/steipete/metcli/cmd/ig-cookies@v0.1.0
-go install github.com/steipete/metcli/cmd/ig-profile@v0.1.0
+go install github.com/steipete/metcli/cmd/metcli@v0.1.1
+go install github.com/steipete/metcli/cmd/ig-cookies@v0.1.1
+go install github.com/steipete/metcli/cmd/ig-profile@v0.1.1
 ```
 
 Build from source with Go 1.25.0 or newer. The preferred toolchain is Go
