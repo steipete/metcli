@@ -7,9 +7,9 @@ for macOS, Linux, or Windows (Intel/AMD 64-bit or ARM64). Each archive contains
 `checksums.txt` before extracting the binaries into a directory on your PATH.
 Run `metcli --version` to check the installed version.
 
-macOS binaries require macOS 12 or newer. These GoReleaser cross-builds are not
-Developer ID signed or notarized; Gatekeeper may block downloaded binaries.
-You can also install from source:
+macOS binaries require macOS 12 or newer. Starting with 0.1.1, release binaries
+are Developer ID signed by Peter Steinberger and notarized by Apple, so direct
+downloads pass Gatekeeper. You can also install from source:
 
 ```sh
 go install github.com/steipete/metcli/cmd/metcli@v0.1.0

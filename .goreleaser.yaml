@@ -5,11 +5,17 @@ project_name: metcli
 release:
   name_template: "metcli {{ .Version }}"
 
+changelog:
+  disable: true
+
 builds:
   - id: metcli
     main: ./cmd/metcli
     binary: metcli
-    env: [CGO_ENABLED=0]
+    env: &release-env [CGO_ENABLED=0, MACOSX_DEPLOYMENT_TARGET=12.0]
+    hooks: &release-hooks
+      post:
+        - cmd: 'python3 scripts/check_macos_target.py {{ .Os }} "{{ .Path }}"'
     targets: &targets
       - darwin_amd64
       - darwin_arm64
@@ -20,12 +26,14 @@ builds:
   - id: ig-cookies
     main: ./cmd/ig-cookies
     binary: ig-cookies
-    env: [CGO_ENABLED=0]
+    env: *release-env
+    hooks: *release-hooks
     targets: *targets
   - id: ig-profile
     main: ./cmd/ig-profile
     binary: ig-profile
-    env: [CGO_ENABLED=0]
+    env: *release-env
+    hooks: *release-hooks
     targets: *targets
 
 archives:

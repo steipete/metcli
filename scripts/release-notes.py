@@ -21,11 +21,8 @@ def main():
     )
     if section is None or not section[1].strip():
         raise SystemExit("missing finalized changelog section")
-    print(section[1].strip())
-    root = f"https://github.com/steipete/metcli/releases"
-    print(f"\n[Downloads]({root}/tag/{tag}) · "
-          f"[Checksums]({root}/download/{tag}/checksums.txt) · "
-          f"[Go module](https://pkg.go.dev/github.com/steipete/metcli@{tag})")
+    # The shared workflow publishes the exact dated section, including its heading.
+    sys.stdout.write(section[0])
 
 
 if __name__ == "__main__":
