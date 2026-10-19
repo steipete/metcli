@@ -2,8 +2,7 @@
 
 `.github/workflows/release-unified.yml` calls the shared
 [Go CLI archetype](https://github.com/openclaw/release-workflows) pinned to
-the v1.9.0-compatible multi-command archive fix from upstream PR #54
-(`4101771179b7a1854728bba08805839485f874f7`). It publishes six platform
+v1.11.8 (`fc49859568b3781af7663bee48c003fd987dc08b`). It publishes six platform
 archives containing `metcli`, `ig-cookies`, and `ig-profile`, preserving
 `metcli_<version>_<os>_<arch>.tar.gz` (Windows: `.zip`) and `checksums.txt`.
 Archives also retain `CHANGELOG.md`, `LICENSE`, and `README.md`.
@@ -45,7 +44,7 @@ Start with clean, synchronized `main` and create a release branch. Set
 the current changelog section with the local date and a `**Highlights:**` line.
 Keep every entry and credit.
 
-Release builds use Go 1.25.14, `CGO_ENABLED=0`, and
+Release builds use security-patched Go 1.26.9, `CGO_ENABLED=0`, and
 `MACOSX_DEPLOYMENT_TARGET=12.0`. Build on macOS so every Darwin GoReleaser
 post-build hook can inspect `otool -l`; it requires every binary and architecture
 to report exactly macOS 12.0. Go currently sets that minimum for pure-Go builds;
@@ -55,7 +54,7 @@ the environment variable alone is not proof. If CGO is introduced, also set
 Run the local gate on macOS, substituting the intended version:
 
 ```sh
-export GOTOOLCHAIN=go1.25.14
+export GOTOOLCHAIN=go1.26.9
 test -z "$(gofmt -l .)"
 go mod tidy
 git diff --exit-code -- go.mod go.sum
@@ -76,12 +75,14 @@ resulting `main` commit.
 
 ## Publish
 
+Release dispatches default to `dry_run: true`. To build, sign, and independently verify the selected main commit without creating tags or releases, use `gh workflow run release-unified.yml --ref main -f version=0.1.1 -f dry_run=true`. Xcode 27 runners verify both architectures, with Intel execution under Rosetta.
+
 Check local and remote tags and `gh release list --limit 3 --json tagName`
 immediately before dispatch; stop if the intended version already exists.
 Dispatch the caller at the current protected `main` head:
 
 ```sh
-gh workflow run release-unified.yml --ref main -f version=0.1.1
+gh workflow run release-unified.yml --ref main -f version=0.1.1 -f dry_run=false
 ```
 
 The workflow creates the annotated tag itself; do not create a separate tag or

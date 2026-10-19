@@ -17,8 +17,10 @@ go install github.com/steipete/metcli/cmd/ig-cookies@v0.1.1
 go install github.com/steipete/metcli/cmd/ig-profile@v0.1.1
 ```
 
-Build from source with Go 1.25.0 or newer. The preferred toolchain is Go
-1.25.14, selected by `go.mod`; CI checks both versions.
+Build from source with Go 1.25.0 or newer. The preferred and release toolchain is
+Go 1.26.9, selected by `go.mod` to retain macOS 12 support. CI tests the source
+minimum and Go 1.27.2; Xcode 27 release checks build with Go 1.26.9 and smoke-test
+Intel binaries under Rosetta.
 
 ```sh
 make test build

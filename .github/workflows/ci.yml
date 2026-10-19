@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ['1.25.0', '1.25.14']
+        go: ['1.25.0', '1.27.2']
     env:
       GOTOOLCHAIN: local
     steps:
@@ -50,7 +50,7 @@ jobs:
 
   macos-release:
     name: macOS release targets
-    runs-on: macos-15
+    runs-on: xcode-27
     env:
       GOTOOLCHAIN: local
     steps:
@@ -59,7 +59,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@v7
         with:
-          go-version: '1.25.14'
+          go-version: '1.26.9'
           cache: true
       - name: Test deployment-target guard
         run: python3 -m unittest discover -s scripts -p 'test_*.py'
@@ -68,3 +68,19 @@ jobs:
         with:
           version: '~> v2'
           args: build --snapshot --clean --parallelism=2
+      - name: Smoke-test both macOS architectures
+        run: |
+          arch -x86_64 /usr/bin/true || sudo softwareupdate --install-rosetta --agree-to-license
+          arch -x86_64 /usr/bin/true
+          for target in amd64 arm64; do
+            for name in metcli ig-cookies ig-profile; do
+              for binary in dist/"${name}"_darwin_"${target}"*/"$name"; do
+                test -x "$binary"
+                if [ "$target" = amd64 ]; then
+                  arch -x86_64 "$binary" --version
+                else
+                  "$binary" --version
+                fi
+              done
+            done
+          done

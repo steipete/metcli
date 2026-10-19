@@ -2,7 +2,7 @@ module github.com/steipete/metcli
 
 go 1.25.0
 
-toolchain go1.25.14
+toolchain go1.26.9
 
 require (
 	github.com/alecthomas/kong v1.16.1
