@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Move macOS CI and signed release verification to Xcode 27, preserve macOS 12 with patched Go 1.26.9, test current Go 1.27.2, and verify all Intel CLIs under Rosetta.
+- Add safe, non-publishing release dry runs through the updated shared workflow.
+
 ## 0.1.1 - 2026-09-14
 
 **Highlights:** macOS downloads are signed and notarized.

@@ -3,6 +3,10 @@ name: Release (unified)
 on:
   workflow_dispatch:
     inputs:
+      dry_run:
+        description: Build, sign and verify without creating tags or releases
+        type: boolean
+        default: true
       version:
         description: SemVer to release
         required: true
@@ -23,11 +27,12 @@ jobs:
       - name: Check frozen release metadata
         env:
           RELEASE_VERSION: ${{ inputs.version }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -euo pipefail
           tag="v${RELEASE_VERSION#v}"
           [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
-          if git show-ref --verify --quiet "refs/tags/$tag"; then
+          if [[ "$DRY_RUN" != true ]] && git show-ref --verify --quiet "refs/tags/$tag"; then
             git checkout --detach "refs/tags/$tag"
           fi
           python3 scripts/release-notes.py "$tag"
@@ -40,8 +45,9 @@ jobs:
       contents: write
       pull-requests: write
       statuses: read
-    uses: openclaw/release-workflows/.github/workflows/release-go-cli.yml@4101771179b7a1854728bba08805839485f874f7 # v1.9.0 + multi-command archive fix (#54)
+    uses: openclaw/release-workflows/.github/workflows/release-go-cli.yml@fc49859568b3781af7663bee48c003fd987dc08b # v1.11.8
     with:
+      dry-run: ${{ inputs.dry_run }}
       version: ${{ inputs.version }}
       repository-type: personal
       build-runner: macos
