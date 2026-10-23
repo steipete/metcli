@@ -9,7 +9,7 @@ Archives also retain `CHANGELOG.md`, `LICENSE`, and `README.md`.
 
 macOS binaries are Developer ID signed by Peter Steinberger (team
 `Y5PE65HELJ`) with hardened runtime and notarized by Apple. The shared workflow
-freezes an annotated tag, builds without signing credentials, then signs in a
+verifies the fleet-signed annotated tag, builds without signing credentials, then signs in a
 separate job. Independent arm64 and Intel jobs verify the immutable artifacts
 before publication. `ASSET-INVENTORY.json`, `SIGNING-MANIFEST.json`, and
 `RELEASE-NOTES.md` accompany the checksums as release provenance.
@@ -61,9 +61,9 @@ git diff --exit-code -- go.mod go.sum
 make test build
 go vet ./...
 go build -o bin/ ./cmd/...
-python3 scripts/smoke.py bin 0.1.1
+python3 scripts/smoke.py bin 0.1.2
 python3 -m unittest discover -s scripts -p 'test_*.py'
-python3 scripts/release-notes.py v0.1.1
+python3 scripts/release-notes.py v0.1.2
 actionlint
 goreleaser check
 goreleaser build --snapshot --clean --parallelism=2
@@ -75,18 +75,22 @@ resulting `main` commit.
 
 ## Publish
 
-Release dispatches default to `dry_run: true`. To build, sign, and independently verify the selected main commit without creating tags or releases, use `gh workflow run release-unified.yml --ref main -f version=0.1.1 -f dry_run=true`. Xcode 27 runners verify both architectures, with Intel execution under Rosetta.
+Release dispatches default to `dry_run: true`. To build, sign, and independently verify the selected main commit without creating tags or releases, use `gh workflow run release-unified.yml --ref main -f version=0.1.2 -f dry_run=true`. Xcode 27 runners verify both architectures, with Intel execution under Rosetta.
 
 Check local and remote tags and `gh release list --limit 3 --json tagName`
 immediately before dispatch; stop if the intended version already exists.
-Dispatch the caller at the current protected `main` head:
+After pushing the verified signed tag, dispatch the caller at the current
+protected `main` head:
 
 ```sh
-gh workflow run release-unified.yml --ref main -f version=0.1.1 -f dry_run=false
+gh workflow run release-unified.yml --ref main -f version=0.1.2 -f dry_run=false
 ```
 
-The workflow creates the annotated tag itself; do not create a separate tag or
-use the former tag-push release trigger. `scripts/release-notes.py` validates
+After the dry run succeeds, create an SSH-signed annotated `v<version>` tag at
+the verified release-prep merge commit using the fleet release key. Verify it
+with `.github/release-allowed-signers` before pushing. Never move an existing
+tag. The workflow requires that signed tag and reuses its frozen source;
+publishing still requires the explicit dispatch, not a tag-push trigger. `scripts/release-notes.py` validates
 the version constant against the requested tag. The shared workflow publishes
 the exact finalized changelog section, including its dated heading.
 

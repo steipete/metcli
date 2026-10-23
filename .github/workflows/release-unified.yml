@@ -50,6 +50,7 @@ jobs:
       dry-run: ${{ inputs.dry_run }}
       version: ${{ inputs.version }}
       repository-type: personal
+      require-signed-tag: true
       build-runner: macos
       checksum-filename: checksums.txt
       archive-files: '["CHANGELOG.md", "LICENSE", "README.md"]'
