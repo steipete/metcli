@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.1.2 - 2026-10-23
+
+**Highlights:** Fix GO-2026-6809 in crypto/x509 with patched Go toolchains while retaining macOS 12 support.
 
 - Security: select Go 1.27.3 for source builds and Go 1.26.10 for macOS 12-compatible releases to fix GO-2026-6809, preserving the Go 1.25.0 language minimum.
 - Move macOS CI and signed release verification to Xcode 27, preserve macOS 12 with patched Go 1.26.9, test current Go 1.27.2, and verify all Intel CLIs under Rosetta.
