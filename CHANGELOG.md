@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 0.1.2 - 2026-10-23
 
 **Highlights:** Fix GO-2026-6809 in crypto/x509 with patched Go toolchains while retaining macOS 12 support.
