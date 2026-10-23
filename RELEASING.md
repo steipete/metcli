@@ -44,7 +44,7 @@ Start with clean, synchronized `main` and create a release branch. Set
 the current changelog section with the local date and a `**Highlights:**` line.
 Keep every entry and credit.
 
-Release builds use security-patched Go 1.26.9, `CGO_ENABLED=0`, and
+Release builds use security-patched Go 1.26.10, `CGO_ENABLED=0`, and
 `MACOSX_DEPLOYMENT_TARGET=12.0`. Build on macOS so every Darwin GoReleaser
 post-build hook can inspect `otool -l`; it requires every binary and architecture
 to report exactly macOS 12.0. Go currently sets that minimum for pure-Go builds;
@@ -54,7 +54,7 @@ the environment variable alone is not proof. If CGO is introduced, also set
 Run the local gate on macOS, substituting the intended version:
 
 ```sh
-export GOTOOLCHAIN=go1.26.9
+export GOTOOLCHAIN=go1.26.10
 test -z "$(gofmt -l .)"
 go mod tidy
 git diff --exit-code -- go.mod go.sum
@@ -69,7 +69,7 @@ goreleaser check
 goreleaser build --snapshot --clean --parallelism=2
 ```
 
-Also run build, test, and smoke with `GOTOOLCHAIN=go1.25.0`. Review through P2,
+Also run build, test, and smoke with `GOTOOLCHAIN=go1.27.3`. Review through P2,
 land preparation through a squash-merged PR, and wait for green CI on the exact
 resulting `main` commit.
 
