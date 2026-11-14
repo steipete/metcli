@@ -17,10 +17,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - go: '1.26.10'
+          - go: '1.26.11'
             check: '1.25.0'
           # Keep the required branch-protection context while updating its compiler.
-          - go: '1.27.3'
+          - go: '1.27.4'
             check: '1.25.14'
     env:
       GOTOOLCHAIN: local
@@ -65,7 +65,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@v7
         with:
-          go-version: '1.26.10'
+          go-version: '1.26.11'
           cache: true
       - name: Test deployment-target guard
         run: python3 -m unittest discover -s scripts -p 'test_*.py'

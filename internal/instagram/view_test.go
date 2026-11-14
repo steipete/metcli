@@ -2,11 +2,34 @@ package instagram
 
 import (
 	"bytes"
+	"context"
 	"image"
 	"image/color"
 	"image/png"
+	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 )
+
+func TestDownloadImageOmitsHostBody(t *testing.T) {
+	const hostBody = "not-an-image \x1b[31msecret-page"
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, hostBody, http.StatusBadGateway)
+	}))
+	defer server.Close()
+
+	_, _, _, err := DownloadImage(context.Background(), server.Client(), server.URL+"/pic.jpg", "ann", CookieBundle{})
+	if err == nil {
+		t.Fatal("expected fetch error")
+	}
+	if strings.Contains(err.Error(), "secret-page") || strings.ContainsRune(err.Error(), '\x1b') {
+		t.Fatalf("error includes host body: %q", err.Error())
+	}
+	if !strings.Contains(err.Error(), "502") {
+		t.Fatalf("error = %q, want status", err.Error())
+	}
+}
 
 func TestParseUsername(t *testing.T) {
 	cases := map[string]string{

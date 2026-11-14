@@ -1,6 +1,13 @@
 package main
 
-import "testing"
+import (
+	"bufio"
+	"bytes"
+	"strings"
+	"testing"
+
+	"github.com/steipete/metcli/internal/instagram"
+)
 
 func TestCompactWhitespace(t *testing.T) {
 	input := "hello \n  world\t\tfoo"
@@ -9,6 +16,25 @@ func TestCompactWhitespace(t *testing.T) {
 	}
 	if got := compactWhitespace("   "); got != "" {
 		t.Fatalf("expected empty for whitespace-only, got %q", got)
+	}
+}
+
+func TestRenderItemTextStripsTerminalControls(t *testing.T) {
+	var buf bytes.Buffer
+	writer := bufio.NewWriter(&buf)
+	renderItemText(writer, instagram.MediaItem{
+		Username: "ann\x1b[31m",
+		Caption:  "hello\x1b[0m world\u009b",
+	})
+	if err := writer.Flush(); err != nil {
+		t.Fatal(err)
+	}
+	got := buf.String()
+	if strings.ContainsRune(got, '\x1b') || strings.ContainsRune(got, '\u009b') {
+		t.Fatalf("control bytes leaked: %q", got)
+	}
+	if !strings.Contains(got, "@ann") || !strings.Contains(got, "hello") || !strings.Contains(got, "world") {
+		t.Fatalf("visible text missing: %q", got)
 	}
 }
 
