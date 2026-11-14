@@ -236,8 +236,8 @@ func renderItemText(writer *bufio.Writer, item instagram.MediaItem) {
 	if writer == nil {
 		return
 	}
-	username := strings.TrimSpace(item.Username)
-	caption := compactWhitespace(item.Caption)
+	username := stripTerminalControls(strings.TrimSpace(item.Username))
+	caption := stripTerminalControls(compactWhitespace(item.Caption))
 	if username != "" {
 		_, _ = fmt.Fprintf(writer, "@%s\n", username)
 	}
@@ -247,6 +247,15 @@ func renderItemText(writer *bufio.Writer, item instagram.MediaItem) {
 	if username != "" || caption != "" {
 		_, _ = fmt.Fprintln(writer)
 	}
+}
+
+func stripTerminalControls(input string) string {
+	return strings.Map(func(r rune) rune {
+		if r < 0x20 || r == 0x7f || (r >= 0x80 && r <= 0x9f) {
+			return -1
+		}
+		return r
+	}, input)
 }
 
 func compactWhitespace(input string) string {

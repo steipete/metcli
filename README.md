@@ -18,8 +18,8 @@ go install github.com/steipete/metcli/cmd/ig-profile@v0.1.2
 ```
 
 The source language minimum remains Go 1.25.0; `go.mod` selects patched Go
-1.27.3. CI tests Go 1.26.10 and 1.27.3. Release builds and Xcode 27 release checks
-use patched Go 1.26.10 to retain macOS 12 support and smoke-test Intel binaries
+1.27.4. CI tests Go 1.26.11 and 1.27.4. Release builds and Xcode 27 release checks
+use patched Go 1.26.11 to retain macOS 12 support and smoke-test Intel binaries
 under Rosetta.
 
 ```sh
@@ -32,3 +32,5 @@ The smoke check requires Python 3 and exercises the built CLIs with a temporary,
 synthetic Chrome cookie database. It does not use your browser profile or Keychain.
 
 See [RELEASING.md](RELEASING.md) for the release procedure.
+
+Home-feed terminal text removes control characters from usernames and captions. Failed image downloads report the HTTP status without printing the host response body; JSON output retains escaped source text.

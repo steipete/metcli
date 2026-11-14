@@ -117,8 +117,7 @@ func DownloadImage(
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
-		return nil, 0, 0, fmt.Errorf("fetch %s: %d %s", imgURL, resp.StatusCode, strings.TrimSpace(string(body)))
+		return nil, 0, 0, fmt.Errorf("fetch %s: %d", imgURL, resp.StatusCode)
 	}
 	data, err := io.ReadAll(io.LimitReader(resp.Body, 15<<20))
 	if err != nil {

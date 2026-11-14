@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Strip terminal control characters from home-feed usernames/captions and omit failed image response bodies from diagnostics. Thanks @SebTardif.
+- Use Go 1.27.4 for source builds and Go 1.26.11 for macOS 12-compatible releases while retaining the Go 1.25.0 language minimum; update Kong to 1.17.0 and Sweetcookie to 0.1.0 and SQLite to the last Go 1.25-compatible 1.59.0.
+
 ## 0.1.2 - 2026-10-23
 
 **Highlights:** Fix GO-2026-6809 in crypto/x509 with patched Go toolchains while retaining macOS 12 support.
