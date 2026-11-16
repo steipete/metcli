@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.1.3 - 2026-11-15
+
+**Highlights:** Harden Instagram home-feed output against terminal control sequences and update compatible dependencies and Go toolchains.
 
 - Strip terminal control characters from home-feed usernames/captions and omit failed image response bodies from diagnostics. Thanks @SebTardif.
 - Use Go 1.27.4 for source builds and Go 1.26.11 for macOS 12-compatible releases while retaining the Go 1.25.0 language minimum; update Kong to 1.17.0 and Sweetcookie to 0.1.0 and SQLite to the last Go 1.25-compatible 1.59.0.
