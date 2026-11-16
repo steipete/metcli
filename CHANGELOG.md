@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 0.1.3 - 2026-11-15
 
 **Highlights:** Harden Instagram home-feed output against terminal control sequences and update compatible dependencies and Go toolchains.
